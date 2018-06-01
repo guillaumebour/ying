@@ -12,27 +12,30 @@ ENTITY alu_tb IS
 ARCHITECTURE testbench OF alu_tb IS 
     -- Instantiate the Unit Under Test (UUT)
     COMPONENT alu
-        PORT(clk   : in  STD_LOGIC;
-             pipeline_in : IN  PIPELINE_PARAMS;
-             pipeline_out : OUT  PIPELINE_PARAMS
-         );
+        PORT(   a : in WORD;
+                b : in WORD;
+                ctrl_alu : in WORD;
+                s : out WORD); 
     END COMPONENT;
 
    --Inputs
-    signal pipeline_in : PIPELINE_PARAMS;
+    signal input_a : WORD;
+    signal input_b : WORD;
+    signal input_ctrl_alu : WORD;
     signal clk : std_logic := '0';
 
    --Outputs
-    signal pipeline_out : PIPELINE_PARAMS;
+    signal output_s : WORD;
 
     constant clk_period : time := 500 ps;
 
 BEGIN
    -- Unit Under Test (UUT)
     uut: alu PORT MAP (
-                          clk => clk,
-                          pipeline_in => pipeline_in,
-                          pipeline_out => pipeline_out
+                          a => input_a,
+                          b => input_b,
+                          ctrl_alu => input_ctrl_alu,
+                          s => output_s
                       );
 
     clk_process : process
@@ -45,11 +48,9 @@ BEGIN
 
     stim_proc: process
     begin
-        pipeline_in(0) <= "0000000000000000", MUL_OPC after 20 ns;
-        pipeline_in(1) <= "0000000000000000";
-        pipeline_in(2) <= "0000000000000010";
-        pipeline_in(3) <= "0000000000000010";
-        pipeline_in(4) <= "0000000000000000";
+        input_a <= CST_ZERO, CST_ONE after 20 ns;
+        input_b <= CST_ZERO, CST_ONE after 30 ns;
+        input_ctrl_alu <= CST_ZERO, CST_ONE after 40 ns;
         wait;
     end process;
 END;

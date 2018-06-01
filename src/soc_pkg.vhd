@@ -15,13 +15,18 @@ package soc_pkg is
     -- index 4: flag
     type PIPELINE_PARAMS is array(0 to 4) of WORD;
 
+    constant CTRL_ALU_ADD : WORD := "0000000000000000";
+    constant CTRL_ALU_SUB : WORD := "0000000000000001";
+    constant CTRL_ALU_MUL : WORD := "0000000000000010";
+    constant CTRL_ALU_DIV : WORD := "0000000000000011";
+
     constant CST_ONE   : WORD := "0000000000000001";
     constant CST_ZERO  : WORD := "0000000000000010";
 
     constant ADD_OPC  : WORD := "0000000000000001";
     constant MUL_OPC  : WORD := "0000000000000010";
     constant SUB_OPC  : WORD := "0000000000000011";
-    constant DIV_OPC  : WORD := "0000000000000100";
+    constant DIV_OPC  : WORD := "0000000000000100"; -- NYI
     constant COP_OPC  : WORD := "0000000000000101";
     constant AFC_OPC  : WORD := "0000000000000110";
     constant LOAD_OPC : WORD := "0000000000000111";
@@ -34,6 +39,3 @@ package soc_pkg is
     constant JMP_OPC  : WORD := "0000000000001110";
     constant JMPC_OPC : WORD := "0000000000001111";
 end soc_pkg;
-
-package body soc_pkg is
-    end soc_pkg;
