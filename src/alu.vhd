@@ -10,10 +10,10 @@ use WORK.SOC_PKG.ALL;
 
 entity alu is
     Port (
-            a : in WORD; -- A
-            b : in WORD; -- B
+            a : in WORD;
+            b : in WORD;
             ctrl_alu : in WORD;
-            s : out WORD -- S
+            s : out WORD
         );
 end alu;
 
