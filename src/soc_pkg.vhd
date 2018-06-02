@@ -8,12 +8,15 @@ use IEEE.STD_LOGIC_1164.all;
 package soc_pkg is
     subtype WORD is std_logic_vector(0 to 15);
     subtype DWORD is std_logic_vector(0 to 31);
+    subtype DDWORD is std_logic_vector(0 to 63);
     -- index 0: op
     -- index 1: a
     -- index 2: b
     -- index 3: c
     -- index 4: flag
     type PIPELINE_PARAMS is array(0 to 4) of WORD;
+
+    constant DDWORD_ZERO : DDWORD := "0000000000000000000000000000000000000000000000000000000000000000";
 
     constant CTRL_ALU_ADD : WORD := "0000000000000000";
     constant CTRL_ALU_SUB : WORD := "0000000000000001";
