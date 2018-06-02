@@ -11,7 +11,7 @@ SIMDIR = simu
 STOP_TIME = 500ns
 GHDL_SIM_OPT = --stop-time=$(STOP_TIME)
 
-WAVEFORM_VIEWER = gtkwave
+WAVEFORM_VIEWER = open -a gtkwave
 
 .PHONY: clean
 
@@ -33,4 +33,6 @@ view:
 	$(WAVEFORM_VIEWER) $(SIMDIR)/$(TESTBENCHFILE).ghw
 
 clean:
-	@rm -rf $(SIMDIR)
+	-@rm -rf $(SIMDIR)
+	-@rm *_tb
+	-@rm e~*.o
