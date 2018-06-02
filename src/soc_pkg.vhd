@@ -24,7 +24,7 @@ package soc_pkg is
     constant CTRL_ALU_DIV : WORD := "0000000000000011";
 
     constant CST_ONE   : WORD := "0000000000000001";
-    constant CST_ZERO  : WORD := "0000000000000010";
+    constant CST_ZERO  : WORD := "0000000000000000";
 
     constant ADD_OPC  : WORD := "0000000000000001";
     constant MUL_OPC  : WORD := "0000000000000010";
