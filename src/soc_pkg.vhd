@@ -15,6 +15,7 @@ package soc_pkg is
     -- index 3: c
     -- index 4: flag
     type PIPELINE_PARAMS is array(0 to 4) of WORD;
+    subtype REG_ADDR_T is std_logic_vector(3 downto 0);
 
     constant DDWORD_ZERO : DDWORD := "0000000000000000000000000000000000000000000000000000000000000000";
 
