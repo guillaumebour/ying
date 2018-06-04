@@ -9,12 +9,13 @@ package soc_pkg is
     subtype WORD is std_logic_vector(0 to 15);
     subtype DWORD is std_logic_vector(0 to 31);
     subtype DDWORD is std_logic_vector(0 to 63);
-    -- index 0: op
-    -- index 1: a
-    -- index 2: b
-    -- index 3: c
-    -- index 4: flag
-    type PIPELINE_PARAMS is array(0 to 4) of WORD;
+
+    constant pipe_op : integer := 0;
+    constant pipe_a  : integer := 1;
+    constant pipe_b  : integer := 2;
+    constant pipe_c  : integer := 3;
+    type PIPELINE_PARAMS is array(0 to 3) of WORD;
+
     subtype REG_ADDR_T is std_logic_vector(3 downto 0);
 
     constant DDWORD_ZERO : DDWORD := "0000000000000000000000000000000000000000000000000000000000000000";
