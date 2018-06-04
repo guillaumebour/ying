@@ -7,14 +7,14 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE WORK.SOC_PKG.ALL;
 
 
-ENTITY ip_tb IS
-    END ip_tb;
+ENTITY pc_tb IS
+    END pc_tb;
 
-ARCHITECTURE testbench OF ip_tb IS 
+ARCHITECTURE testbench OF pc_tb IS 
 
     -- Component Declaration for the Unit Under Test (UUT)
 
-    COMPONENT ip
+    COMPONENT pc
         PORT(
                 Din : IN  WORD;
                 CK : IN  std_logic;
@@ -42,7 +42,7 @@ ARCHITECTURE testbench OF ip_tb IS
 BEGIN
 
    -- Instantiate the Unit Under Test (UUT)
-    uut: ip PORT MAP (
+    uut: pc PORT MAP (
                                Din => Din,
                                CK => CK,
                                SENS => SENS,

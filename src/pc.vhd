@@ -8,16 +8,16 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_ARITH.all;
 use WORK.SOC_PKG.ALL;
 
-entity ip is
+entity pc is
     Port ( Din : in  WORD;
            CK : in  STD_LOGIC;
            SENS : in  STD_LOGIC;
            LOAD : in  STD_LOGIC;
            EN : in  STD_LOGIC;
            Dout : out  WORD);
-end ip;
+end pc;
 
-architecture Behavioral of ip is
+architecture Behavioral of pc is
     SIGNAL out_signal: WORD;
 begin
     process
