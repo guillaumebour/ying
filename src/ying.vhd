@@ -59,6 +59,22 @@ architecture Behavioral of ying is
     signal rf_out_a : WORD;
     signal rf_out_b : WORD;
 
+    -- RAM
+    COMPONENT ram
+        PORT(   clk : in std_ulogic;
+                writeEnable     : in  std_ulogic;
+                readEnable      : in  std_ulogic;
+                addr_input      : in  std_ulogic_vector(15 downto 0);
+                data_input      : in  std_ulogic_vector(15 downto 0);
+                data_out        : out std_ulogic_vector(15 downto 0)       
+            ); 
+    END COMPONENT;
+    signal ram_writeEnable  : std_ulogic;
+    signal ram_readEnable   : std_ulogic;
+    signal ram_addr_input   : std_ulogic_vector(15 downto 0);
+    signal ram_data_input   : std_ulogic_vector(15 downto 0);
+    signal ram_data_out     : std_ulogic_vector(15 downto 0);
+
     -- Pipelines
     component lidi Port(clk   : in  STD_LOGIC;
                         p_in  : in  PIPELINE_PARAMS;
@@ -96,6 +112,9 @@ begin
 
     -- Register file
     lRF : rf port map(CK, rf_addr_a, rf_addr_b, rf_writeEnable, rf_addr_w, rf_data, rf_rst, rf_out_a, rf_out_b);
+
+    -- RAM
+    lRAM: ram port map(CK, ram_writeEnable, ram_readEnable, ram_addr_input, ram_data_input, ram_data_out);
 
     -- Pipelines
     llidi : lidi port map(CK, lidi_p_in, lidi_p_out);
