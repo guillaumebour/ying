@@ -61,17 +61,19 @@ architecture Behavioral of ying is
     COMPONENT ram
         PORT(   clk : in std_ulogic;
                 writeEnable     : in  std_ulogic;
-                readEnable      : in  std_ulogic;
-                addr_input      : in  std_ulogic_vector(15 downto 0);
-                data_input      : in  std_ulogic_vector(15 downto 0);
-                data_out        : out std_ulogic_vector(15 downto 0)       
+                addr_input      : in  WORD;
+                addr_code_input : in  WORD;
+                data_in         : in  WORD;
+                data_out        : out WORD;
+                ins_out         : out PIPELINE_PARAMS
             ); 
     END COMPONENT;
-    signal ram_writeEnable  : std_ulogic;
-    signal ram_readEnable   : std_ulogic;
-    signal ram_addr_input   : std_ulogic_vector(15 downto 0);
-    signal ram_data_input   : std_ulogic_vector(15 downto 0);
-    signal ram_data_out     : std_ulogic_vector(15 downto 0);
+    signal ram_writeEnable      : std_ulogic;
+    signal ram_addr_input       : WORD;
+    signal ram_addr_code_input  : WORD;
+    signal ram_data_in          : WORD;
+    signal ram_data_out         : WORD;
+    signal ram_ins_out          : PIPELINE_PARAMS;
 
     -- Pipelines
     component lidi Port(clk   : in  STD_LOGIC;
@@ -126,18 +128,15 @@ begin
     rf_rst <= '0';
 
     -- RAM
-    lRAM: ram port map(CK, ram_writeEnable, ram_readEnable, ram_addr_input, ram_data_input, ram_data_out);
+    lRAM: ram port map(CK, ram_writeEnable, , ram_addr_input, addr_code_input, data_in, data_out, ins_out);
     ram_writeEnable <= '0';
-    ram_readEnable  <= '1';
-    -- ram_addr_input  <= PC_Dout;
-    -- ram_data_input  <= CST_ZERO;
+    ram_addr_input  <= PC_Dout;
+    ram_data_input  <= CST_ZERO;
 
     -- Pipelines
     llidi : lidi port map(CK, lidi_p_in, lidi_p_out);
-    -- lidi_p_in(pipe_op) <= ram_data_out;
-    -- lidi_p_in(pipe_a)  <= ram_data_out;
-    -- lidi_p_in(pipe_b)  <= ram_data_out;
-    -- lidi_p_in(pipe_c)  <= ram_data_out;
+    lidi_p_in <= ram_ins_out;
+
 
     ldiex : diex port map(CK, diex_p_in, diex_p_out);
     diex_p_in(pipe_op) <= lidi_p_out(pipe_op);

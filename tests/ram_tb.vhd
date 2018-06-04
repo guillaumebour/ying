@@ -11,34 +11,38 @@ END ram_tb;
 
 ARCHITECTURE testbench OF ram_tb IS 
     COMPONENT ram
-        PORT(   clk : in std_ulogic;
+        PORT(
+                clk : in std_ulogic;
                 writeEnable     : in  std_ulogic;
-                readEnable      : in  std_ulogic;
-                addr_input      : in  std_ulogic_vector(15 downto 0);
-                data_input      : in  std_ulogic_vector(15 downto 0);
-                data_out        : out std_ulogic_vector(15 downto 0)       
+                addr_input      : in  WORD;
+                addr_code_input : in  WORD;
+                data_in         : in  WORD;
+                data_out        : out WORD;
+                ins_out         : out PIPELINE_PARAMS
             ); 
     END COMPONENT;
 
     --Inputs
-    signal clk          : std_ulogic;
-    signal writeEnable  : std_ulogic;
-    signal readEnable   : std_ulogic;
-    signal addr_input   : std_ulogic_vector(15 downto 0);
-    signal data_input   : std_ulogic_vector(15 downto 0);
+    signal clk              : std_ulogic;
+    signal writeEnable      : std_ulogic;
+    signal addr_input       : WORD;
+    signal addr_code_input  : WORD;
+    signal data_in          : WORD;
 
-    --Outputs
-    signal data_out     : std_ulogic_vector(15 downto 0);
+   --Outputs
+    signal data_out         : WORD;
+    signal ins_out          : PIPELINE_PARAMS;
 
     constant clk_period : time := 500 ps;
 BEGIN
     uut: ram PORT MAP (
                           clk => clk,
                           writeEnable => writeEnable,
-                          readEnable => readEnable,
                           addr_input => addr_input,
-                          data_input => data_input,
-                          data_out => data_out
+                          addr_code_input => addr_code_input,
+                          data_in => data_in,
+                          data_out => data_out,
+                          ins_out => ins_out
                       );
 
     clk_process : process
@@ -51,9 +55,10 @@ BEGIN
 
     stim_proc: process
     begin
-        writeEnable <= '0' after 0 ns;
-        readEnable <= '1' after 20 ns;
-        addr_input <= (others => '0') after 20 ns;
+        writeEnable <= '0' after 0 ns, '1' after 20 ns;
+        addr_code_input <= CST_ZERO after 0 ns;
+        addr_input <= CST_ZERO after 0 ns, "0000000001000000" after 20 ns; -- write 1 in memory(64)
+        data_in <= CST_ONE after 20 ns;
         wait;
     end process;
 END;
