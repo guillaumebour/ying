@@ -64,7 +64,7 @@ BEGIN
     stim_proc: process
     begin
         Din <= "0000000000001000" after 10 ns;
-        Load <= '1' after 10 ns;
+        LOAD <= '1' after 10 ns, '0' after 20 ns;
         wait;
     end process;
 END;
