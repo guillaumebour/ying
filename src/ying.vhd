@@ -28,12 +28,12 @@ architecture Behavioral of ying is
     -- ALU
     component alu Port (a : in WORD;
                         b : in WORD;
-                        ctrl_alu : in WORD;
+                        ctrl_alu : in CTRL_ALU_T;
                         s : out WORD);
     end component;   
     signal alu_a : WORD;
     signal alu_b : WORD;
-    signal alu_ctrl_alu : WORD;
+    signal alu_ctrl : CTRL_ALU_T;
     signal alu_s : WORD;
 
     -- Register file
@@ -106,7 +106,7 @@ begin
     lPC : PC port map(PC_Din, CK, PC_LOAD, PC_EN, PC_Dout);
 
     -- ALU
-    lALU : alu port map(alu_a, alu_b, alu_ctrl_alu, alu_s);
+    lALU : alu port map(alu_a, alu_b, alu_ctrl, alu_s);
 
     -- Register file
     lRF : rf port map(CK, rf_addr_a, rf_addr_b, rf_writeEnable, rf_addr_w, rf_data, rf_rst, rf_out_a, rf_out_b);

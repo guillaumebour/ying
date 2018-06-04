@@ -19,10 +19,11 @@ package soc_pkg is
 
     constant DDWORD_ZERO : DDWORD := "0000000000000000000000000000000000000000000000000000000000000000";
 
-    constant CTRL_ALU_ADD : WORD := "0000000000000000";
-    constant CTRL_ALU_SUB : WORD := "0000000000000001";
-    constant CTRL_ALU_MUL : WORD := "0000000000000010";
-    constant CTRL_ALU_DIV : WORD := "0000000000000011";
+    subtype CTRL_ALU_T is std_logic_vector(0 to 1);
+    constant CTRL_ALU_ADD : CTRL_ALU_T := "00";
+    constant CTRL_ALU_SUB : CTRL_ALU_T := "01";
+    constant CTRL_ALU_MUL : CTRL_ALU_T := "10";
+    constant CTRL_ALU_DIV : CTRL_ALU_T := "11";
 
     constant CST_ONE   : WORD := "0000000000000001";
     constant CST_ZERO  : WORD := "0000000000000000";

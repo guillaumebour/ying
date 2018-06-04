@@ -12,7 +12,7 @@ entity alu is
     Port (
             a : in WORD;
             b : in WORD;
-            ctrl_alu : in WORD;
+            ctrl_alu : in CTRL_ALU_T;
             s : out WORD
         );
 end alu;

@@ -13,14 +13,14 @@ ARCHITECTURE testbench OF alu_tb IS
     COMPONENT alu
         PORT(a : in WORD;
              b : in WORD;
-             ctrl_alu : in WORD;
+             ctrl_alu : in CTRL_ALU_T;
              s : out WORD); 
     END COMPONENT;
 
     --Inputs
     signal input_a : WORD;
     signal input_b : WORD;
-    signal input_ctrl_alu : WORD;
+    signal input_ctrl_alu : CTRL_ALU_T;
     signal clk : std_logic := '0';
 
     --Outputs
@@ -47,7 +47,7 @@ BEGIN
     begin
         input_a <= CST_ZERO, CST_ONE after 20 ns;
         input_b <= CST_ZERO, CST_ONE after 30 ns;
-        input_ctrl_alu <= CST_ZERO, CST_ONE after 40 ns;
+        input_ctrl_alu <= CTRL_ALU_ADD, CTRL_ALU_SUB after 40 ns;
         wait;
     end process;
 END;
