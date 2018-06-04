@@ -16,13 +16,11 @@ architecture Behavioral of ying is
     -- PC
     component PC Port (Din : in WORD;
                        CK : in STD_LOGIC;
-                       SENS : in STD_LOGIC;
                        LOAD : in STD_LOGIC;
                        EN : in STD_LOGIC;
                        Dout : out WORD);
-    end component;   
+    end component;
     signal PC_Din : WORD;
-    signal PC_SENS : STD_LOGIC;
     signal PC_LOAD : STD_LOGIC;
     signal PC_EN : STD_LOGIC;
     signal PC_Dout : WORD;
@@ -105,7 +103,7 @@ architecture Behavioral of ying is
     signal memre_p_out : PIPELINE_PARAMS;
 begin
     -- PC
-    lPC : PC port map(PC_Din, CK, PC_SENS, PC_LOAD, PC_EN, PC_Dout);
+    lPC : PC port map(PC_Din, CK, PC_LOAD, PC_EN, PC_Dout);
 
     -- ALU
     lALU : alu port map(alu_a, alu_b, alu_ctrl_alu, alu_s);

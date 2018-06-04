@@ -14,7 +14,6 @@ ARCHITECTURE testbench OF pc_tb IS
         PORT(
                 Din : IN  WORD;
                 CK : IN  std_logic;
-                SENS : IN  std_logic;
                 LOAD : IN  std_logic;
                 EN : IN  std_logic;
                 Dout : OUT  WORD
@@ -24,7 +23,6 @@ ARCHITECTURE testbench OF pc_tb IS
    --Inputs
     signal Din : WORD := CST_ONE;
     signal CK : std_logic := '0';
-    signal SENS : std_logic := '1';
     signal LOAD : std_logic := '0';
     signal EN : std_logic := '0';
 
@@ -36,7 +34,6 @@ BEGIN
     uut: pc PORT MAP (
                         Din => Din,
                         CK => CK,
-                        SENS => SENS,
                         LOAD => LOAD,
                         EN => EN,
                         Dout => Dout
