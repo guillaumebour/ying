@@ -18,7 +18,6 @@ ARCHITECTURE testbench OF ip_tb IS
         PORT(
                 Din : IN  WORD;
                 CK : IN  std_logic;
-                RST : IN  std_logic;
                 SENS : IN  std_logic;
                 LOAD : IN  std_logic;
                 EN : IN  std_logic;
@@ -28,7 +27,6 @@ ARCHITECTURE testbench OF ip_tb IS
 
    --Inputs
     signal Din : WORD := CST_ONE;
-    signal RST : std_logic := '1';
     signal CK : std_logic := '0';
     signal SENS : std_logic := '1';
     signal LOAD : std_logic := '0';
@@ -47,7 +45,6 @@ BEGIN
     uut: ip PORT MAP (
                                Din => Din,
                                CK => CK,
-                               RST => RST,
                                SENS => SENS,
                                LOAD => LOAD,
                                EN => EN,
@@ -66,7 +63,6 @@ BEGIN
    -- Stimulus process
     stim_proc: process
     begin
-        RST <= '0', '1' after 10 ns, '0' after 20 ns;
         Din <= "0000000000001000" after 10 ns;
         Load <= '1' after 10 ns;
         wait;
