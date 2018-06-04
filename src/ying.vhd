@@ -104,19 +104,56 @@ architecture Behavioral of ying is
 begin
     -- PC
     lPC : PC port map(PC_Din, CK, PC_LOAD, PC_EN, PC_Dout);
+    PC_Din  <= CST_ZERO;
+    PC_LOAD <= '0';
+    PC_EN   <= '1';
 
     -- ALU
     lALU : alu port map(alu_a, alu_b, alu_ctrl, alu_s);
+    alu_a <= diex_p_out(pipe_a);
+    alu_b <= diex_p_out(pipe_b);
+    alu_ctrl <= CTRL_ALU_ADD when (diex_p_out(pipe_op) = ADD_OPC) else
+                CTRL_ALU_SUB when (diex_p_out(pipe_op) = SUB_OPC) else
+                CTRL_ALU_MUL when (diex_p_out(pipe_op) = MUL_OPC);
 
     -- Register file
     lRF : rf port map(CK, rf_addr_a, rf_addr_b, rf_writeEnable, rf_addr_w, rf_data, rf_rst, rf_out_a, rf_out_b);
+    -- rf_addr_a <=;
+    -- rf_addr_b <=;
+    rf_writeEnable <= '0';
+    -- rf_addr_w <=;
+    -- rf_data <=;
+    rf_rst <= '0';
 
     -- RAM
     lRAM: ram port map(CK, ram_writeEnable, ram_readEnable, ram_addr_input, ram_data_input, ram_data_out);
+    ram_writeEnable <= '0';
+    ram_readEnable  <= '1';
+    -- ram_addr_input  <= PC_Dout;
+    -- ram_data_input  <= CST_ZERO;
 
     -- Pipelines
     llidi : lidi port map(CK, lidi_p_in, lidi_p_out);
+    -- lidi_p_in(pipe_op) <= ram_data_out;
+    -- lidi_p_in(pipe_a)  <= ram_data_out;
+    -- lidi_p_in(pipe_b)  <= ram_data_out;
+    -- lidi_p_in(pipe_c)  <= ram_data_out;
+
     ldiex : diex port map(CK, diex_p_in, diex_p_out);
+    diex_p_in(pipe_op) <= lidi_p_out(pipe_op);
+    diex_p_in(pipe_a)  <= lidi_p_out(pipe_a);
+    diex_p_in(pipe_b)  <= lidi_p_out(pipe_b);
+    diex_p_in(pipe_c)  <= lidi_p_out(pipe_c);
+
     lexmem : exmem port map(CK, exmem_p_in, exmem_p_out);
+    exmem_p_in(pipe_op) <= diex_p_out(pipe_op);
+    exmem_p_in(pipe_a)  <= diex_p_out(pipe_a);
+    exmem_p_in(pipe_b)  <= diex_p_out(pipe_b);
+    exmem_p_in(pipe_c)  <= diex_p_out(pipe_c);
+
     lmemre : memre port map(CK, memre_p_in, memre_p_out);
+    memre_p_in(pipe_op) <= exmem_p_out(pipe_op);
+    memre_p_in(pipe_a)  <= exmem_p_out(pipe_a);
+    memre_p_in(pipe_b)  <= exmem_p_out(pipe_b);
+    memre_p_in(pipe_c)  <= exmem_p_out(pipe_c);
 end Behavioral;
