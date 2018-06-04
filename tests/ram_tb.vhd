@@ -10,10 +10,8 @@ ENTITY ram_tb IS
 END ram_tb;
 
 ARCHITECTURE testbench OF ram_tb IS 
-    -- Instantiate the Unit Under Test (UUT)
     COMPONENT ram
         PORT(   clk : in std_ulogic;
-        
                 writeEnable     : in  std_ulogic;
                 readEnable      : in  std_ulogic;
                 addr_input      : in  std_ulogic_vector(15 downto 0);
@@ -22,20 +20,18 @@ ARCHITECTURE testbench OF ram_tb IS
             ); 
     END COMPONENT;
 
-   --Inputs
+    --Inputs
     signal clk          : std_ulogic;
     signal writeEnable  : std_ulogic;
     signal readEnable   : std_ulogic;
     signal addr_input   : std_ulogic_vector(15 downto 0);
     signal data_input   : std_ulogic_vector(15 downto 0);
 
-   --Outputs
+    --Outputs
     signal data_out     : std_ulogic_vector(15 downto 0);
 
     constant clk_period : time := 500 ps;
-
 BEGIN
-   -- Unit Under Test (UUT)
     uut: ram PORT MAP (
                           clk => clk,
                           writeEnable => writeEnable,

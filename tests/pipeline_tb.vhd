@@ -7,7 +7,7 @@ USE ieee.std_logic_1164.ALL;
 use work.soc_pkg.all;
 
 ENTITY pipeline_tb IS
-    END pipeline_tb;
+END pipeline_tb;
 
 ARCHITECTURE testbench OF pipeline_tb IS 
     COMPONENT pipeline
@@ -16,24 +16,23 @@ ARCHITECTURE testbench OF pipeline_tb IS
              p_out : out PIPELINE_PARAMS);
     END COMPONENT;
 
-   --Inputs
+    --Inputs
     signal p_in  : PIPELINE_PARAMS;
     signal clk : std_logic := '0';
 
-   --Outputs
+    --Outputs
     signal p_out : PIPELINE_PARAMS;
 
     constant clk_period : time := 500 ps;
 
 BEGIN
-   -- Unit Under Test (UUT)
     uut: pipeline PORT MAP (
                                clk => clk,
                                p_in => p_in,
                                p_out => p_out
                            );
 
-    clk_process :process
+    clk_process : process
     begin
         clk <= '0';
         wait for clk_period/2;
@@ -41,7 +40,7 @@ BEGIN
         wait for clk_period/2;
     end process;
 
-    stim_proc: process
+    stim_proc : process
     begin
         p_in(0) <= "0000000000000000", "1111111111111111" after 20 ns;
         p_in(1) <= "0000000000000000", "1111111111111111" after 25 ns;

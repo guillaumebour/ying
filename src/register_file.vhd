@@ -25,7 +25,6 @@ architecture Behavioral of register_file is
     type REG_FILE_T is array(0 to 15) of WORD;
     signal registers : REG_FILE_T;
 begin
-    
     -- Reading A and B (before bypass)
     out_a <= registers(to_integer(unsigned(addr_a)));
     out_b <= registers(to_integer(unsigned(addr_b)));

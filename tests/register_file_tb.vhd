@@ -9,10 +9,9 @@ USE IEEE.STD_LOGIC_ARITH.ALL;
 USE WORK.SOC_PKG.ALL;
 
 ENTITY register_file_tb IS
-    END register_file_tb;
+END register_file_tb;
 
 ARCHITECTURE testbench OF register_file_tb IS 
-    -- Instantiate the Unit Under Test (UUT)
     COMPONENT register_file
         PORT(   
                 clk : in std_logic;
@@ -27,7 +26,7 @@ ARCHITECTURE testbench OF register_file_tb IS
             ); 
     END COMPONENT;
 
-   --Inputs
+    --Inputs
     signal addr_a : REG_ADDR_T;
     signal addr_b : REG_ADDR_T;
     signal writeEnable : std_logic;
@@ -36,24 +35,23 @@ ARCHITECTURE testbench OF register_file_tb IS
     signal rst : std_logic;
     signal clk : std_logic := '0';
 
-   --Outputs
+    --Outputs
     signal out_a : WORD;
     signal out_b : WORD;
     constant clk_period : time := 500 ps;
 
 BEGIN
-   -- Unit Under Test (UUT)
     uut: register_file PORT MAP (
-                          addr_a => addr_a,
-                          addr_b => addr_b,
-                          writeEnable => writeEnable,
-                          addr_w => addr_w,
-                          data => data,
-                          rst => rst, 
-                          clk => clk,
-                          out_a => out_a,
-                          out_b => out_b
-                      );
+                                    addr_a => addr_a,
+                                    addr_b => addr_b,
+                                    writeEnable => writeEnable,
+                                    addr_w => addr_w,
+                                    data => data,
+                                    rst => rst, 
+                                    clk => clk,
+                                    out_a => out_a,
+                                    out_b => out_b
+                                );
 
     clk_process : process
     begin

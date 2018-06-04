@@ -6,14 +6,10 @@ LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE WORK.SOC_PKG.ALL;
 
-
 ENTITY pc_tb IS
-    END pc_tb;
+END pc_tb;
 
 ARCHITECTURE testbench OF pc_tb IS 
-
-    -- Component Declaration for the Unit Under Test (UUT)
-
     COMPONENT pc
         PORT(
                 Din : IN  WORD;
@@ -34,24 +30,18 @@ ARCHITECTURE testbench OF pc_tb IS
 
    --Outputs
     signal Dout : WORD;
-   -- No clocks detected in port list. Replace <clock> below with 
-   -- appropriate port name 
 
     constant CK_period : time := 500 ps;
-
 BEGIN
-
-   -- Instantiate the Unit Under Test (UUT)
     uut: pc PORT MAP (
-                               Din => Din,
-                               CK => CK,
-                               SENS => SENS,
-                               LOAD => LOAD,
-                               EN => EN,
-                               Dout => Dout
-                           );
+                        Din => Din,
+                        CK => CK,
+                        SENS => SENS,
+                        LOAD => LOAD,
+                        EN => EN,
+                        Dout => Dout
+                     );
 
-   -- Clock process definitions
     CK_process :process
     begin
         CK <= '0';
@@ -60,7 +50,6 @@ BEGIN
         wait for CK_period/2;
     end process;
 
-   -- Stimulus process
     stim_proc: process
     begin
         Din <= "0000000000001000" after 10 ns;

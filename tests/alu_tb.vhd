@@ -7,30 +7,27 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE WORK.SOC_PKG.ALL;
 
 ENTITY alu_tb IS
-    END alu_tb;
+END alu_tb;
 
 ARCHITECTURE testbench OF alu_tb IS 
-    -- Instantiate the Unit Under Test (UUT)
     COMPONENT alu
-        PORT(   a : in WORD;
-                b : in WORD;
-                ctrl_alu : in WORD;
-                s : out WORD); 
+        PORT(a : in WORD;
+             b : in WORD;
+             ctrl_alu : in WORD;
+             s : out WORD); 
     END COMPONENT;
 
-   --Inputs
+    --Inputs
     signal input_a : WORD;
     signal input_b : WORD;
     signal input_ctrl_alu : WORD;
     signal clk : std_logic := '0';
 
-   --Outputs
+    --Outputs
     signal output_s : WORD;
 
     constant clk_period : time := 500 ps;
-
 BEGIN
-   -- Unit Under Test (UUT)
     uut: alu PORT MAP (
                           a => input_a,
                           b => input_b,
