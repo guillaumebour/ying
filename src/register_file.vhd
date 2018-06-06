@@ -36,7 +36,7 @@ begin
     process
     begin
         wait until clk'EVENT and clk='1';
-        if rst='0' then
+        if rst='1' then
             registers <= (others => CST_ZERO); -- Set all registers to 0x0000
             registers(14) <= "1111111111111111";
         else
