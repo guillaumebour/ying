@@ -37,16 +37,16 @@ architecture Behavioral of ying is
     signal alu_s : WORD;
 
     -- Register file
-    component rf Port (clk : in std_logic;
-                       addr_a : in REG_ADDR_T;
-                       addr_b : in REG_ADDR_T;
-                       writeEnable : in std_logic;
-                       addr_w : in REG_ADDR_T;
-                       data : in WORD;
-                       rst : in std_logic;
-                       out_a : out WORD;
-                       out_b : out WORD
-                   );
+    component register_file Port (clk : in std_logic;
+                                  addr_a : in REG_ADDR_T;
+                                  addr_b : in REG_ADDR_T;
+                                  writeEnable : in std_logic;
+                                  addr_w : in REG_ADDR_T;
+                                  data : in WORD;
+                                  rst : in std_logic;
+                                  out_a : out WORD;
+                                  out_b : out WORD
+                              );
     end component;
     signal rf_addr_a : REG_ADDR_T;
     signal rf_addr_b : REG_ADDR_T;
@@ -76,31 +76,16 @@ architecture Behavioral of ying is
     signal ram_ins_out          : PIPELINE_PARAMS;
 
     -- Pipelines
-    component lidi Port(clk   : in  STD_LOGIC;
-                        p_in  : in  PIPELINE_PARAMS;
-                        p_out : out PIPELINE_PARAMS);
+    component pipeline Port(clk   : in  STD_LOGIC;
+                            p_in  : in  PIPELINE_PARAMS;
+                            p_out : out PIPELINE_PARAMS);
     end component;
     signal lidi_p_in : PIPELINE_PARAMS;
     signal lidi_p_out : PIPELINE_PARAMS;
-
-    component diex Port(clk   : in  STD_LOGIC;
-                        p_in  : in  PIPELINE_PARAMS;
-                        p_out : out PIPELINE_PARAMS);
-    end component;
     signal diex_p_in : PIPELINE_PARAMS;
     signal diex_p_out : PIPELINE_PARAMS;
-
-    component exmem Port(clk   : in  STD_LOGIC;
-                         p_in  : in  PIPELINE_PARAMS;
-                         p_out : out PIPELINE_PARAMS);
-    end component;
     signal exmem_p_in : PIPELINE_PARAMS;
     signal exmem_p_out : PIPELINE_PARAMS;
-
-    component memre Port(clk   : in  STD_LOGIC;
-                         p_in  : in  PIPELINE_PARAMS;
-                         p_out : out PIPELINE_PARAMS);
-    end component;
     signal memre_p_in : PIPELINE_PARAMS;
     signal memre_p_out : PIPELINE_PARAMS;
 begin
@@ -119,7 +104,7 @@ begin
                 CTRL_ALU_MUL when (diex_p_out(pipe_op) = MUL_OPC);
 
     -- Register file
-    lRF : rf port map(CK, rf_addr_a, rf_addr_b, rf_writeEnable, rf_addr_w, rf_data, rf_rst, rf_out_a, rf_out_b);
+    lRF : register_file port map(CK, rf_addr_a, rf_addr_b, rf_writeEnable, rf_addr_w, rf_data, rf_rst, rf_out_a, rf_out_b);
     -- rf_addr_a <=;
     -- rf_addr_b <=;
     rf_writeEnable <= '0';
@@ -130,26 +115,26 @@ begin
     -- RAM
     lRAM: ram port map(CK, ram_writeEnable, ram_addr_input, ram_addr_code_input, ram_data_in, ram_data_out, ram_ins_out);
     ram_writeEnable <= '0';
-    ram_addr_input  <= PC_Dout;
+    ram_addr_code_input  <= PC_Dout;
     ram_data_in  <= CST_ZERO;
 
     -- Pipelines
-    llidi : lidi port map(CK, lidi_p_in, lidi_p_out);
+    llidi : pipeline port map(CK, lidi_p_in, lidi_p_out);
     lidi_p_in <= ram_ins_out;
 
-    ldiex : diex port map(CK, diex_p_in, diex_p_out);
+    ldiex : pipeline port map(CK, diex_p_in, diex_p_out);
     diex_p_in(pipe_op) <= lidi_p_out(pipe_op);
     diex_p_in(pipe_a)  <= lidi_p_out(pipe_a);
     diex_p_in(pipe_b)  <= lidi_p_out(pipe_b);
     diex_p_in(pipe_c)  <= lidi_p_out(pipe_c);
 
-    lexmem : exmem port map(CK, exmem_p_in, exmem_p_out);
+    lexmem : pipeline port map(CK, exmem_p_in, exmem_p_out);
     exmem_p_in(pipe_op) <= diex_p_out(pipe_op);
     exmem_p_in(pipe_a)  <= diex_p_out(pipe_a);
     exmem_p_in(pipe_b)  <= diex_p_out(pipe_b);
     exmem_p_in(pipe_c)  <= diex_p_out(pipe_c);
 
-    lmemre : memre port map(CK, memre_p_in, memre_p_out);
+    lmemre : pipeline port map(CK, memre_p_in, memre_p_out);
     memre_p_in(pipe_op) <= exmem_p_out(pipe_op);
     memre_p_in(pipe_a)  <= exmem_p_out(pipe_a);
     memre_p_in(pipe_b)  <= exmem_p_out(pipe_b);
