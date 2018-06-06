@@ -42,11 +42,10 @@ BEGIN
 
     stim_proc : process
     begin
-        p_in(0) <= "0000000000000000", "1111111111111111" after 20 ns;
-        p_in(1) <= "0000000000000000", "1111111111111111" after 25 ns;
-        p_in(2) <= "0000000000000000", "1111111111111111" after 30 ns;
-        p_in(3) <= "0000000000000000", "1111111111111111" after 35 ns;
-        p_in(4) <= "0000000000000000", "1111111111111111" after 40 ns;
+        p_in(0) <= CST_ZERO, CST_ONE after 20 ns;
+        p_in(1) <= CST_ZERO, CST_ONE after 25 ns;
+        p_in(2) <= CST_ZERO, CST_ONE after 30 ns;
+        p_in(3) <= CST_ZERO, CST_ONE after 35 ns;
         wait;
     end process;
 END;
