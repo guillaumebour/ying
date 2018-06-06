@@ -15,7 +15,6 @@ entity register_file is
             writeEnable : in std_logic; -- W
             addr_w : in REG_ADDR_T;     -- @W
             data : in WORD;             -- DATA
-            rst : in std_logic;         -- RST
             out_a : out WORD;           -- QA
             out_b : out WORD           -- QB
         );
@@ -36,14 +35,9 @@ begin
     process
     begin
         wait until clk'EVENT and clk='1';
-        if rst='1' then
-            registers <= (others => CST_ZERO); -- Set all registers to 0x0000
-            registers(14) <= "1111111111111111";
-        else
-            -- Write and bypass
-            if writeEnable = '1' then
-                registers(to_integer(unsigned(addr_w))) <= data;
-            end if;
+        -- Write and bypass
+        if writeEnable = '1' then
+            registers(to_integer(unsigned(addr_w))) <= data;
         end if;
     end process;    
 end Behavioral;

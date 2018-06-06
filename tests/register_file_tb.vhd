@@ -20,7 +20,6 @@ ARCHITECTURE testbench OF register_file_tb IS
                 writeEnable : in std_logic; -- W
                 addr_w : in REG_ADDR_T;     -- @W
                 data : in WORD;             -- DATA
-                rst : in std_logic;         -- RST
                 out_a : out WORD;           -- QA
                 out_b : out WORD           -- QB
             ); 
@@ -32,7 +31,6 @@ ARCHITECTURE testbench OF register_file_tb IS
     signal writeEnable : std_logic;
     signal addr_w : REG_ADDR_T;
     signal data : WORD;
-    signal rst : std_logic;
     signal clk : std_logic := '0';
 
     --Outputs
@@ -47,7 +45,6 @@ BEGIN
                                     writeEnable => writeEnable,
                                     addr_w => addr_w,
                                     data => data,
-                                    rst => rst, 
                                     clk => clk,
                                     out_a => out_a,
                                     out_b => out_b
@@ -63,7 +60,6 @@ BEGIN
 
     stim_proc: process
     begin
-        rst <= '0', '1' after 2 ns;
         writeEnable <= '1' after 2 ns, '0' after 5 ns;
         addr_w <= "0010" after 2 ns;
         data <= "0000000000001000" after 2 ns;

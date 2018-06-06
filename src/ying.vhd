@@ -43,7 +43,6 @@ architecture Behavioral of ying is
                                   writeEnable : in std_logic;
                                   addr_w : in REG_ADDR_T;
                                   data : in WORD;
-                                  rst : in std_logic;
                                   out_a : out WORD;
                                   out_b : out WORD
                               );
@@ -53,7 +52,6 @@ architecture Behavioral of ying is
     signal rf_writeEnable : std_logic;
     signal rf_addr_w : REG_ADDR_T;
     signal rf_data : WORD;
-    signal rf_rst : std_logic;
     signal rf_out_a : WORD;
     signal rf_out_b : WORD;
 
@@ -110,7 +108,6 @@ begin
     rf_writeEnable <= '0';
     -- rf_addr_w <=;
     -- rf_data <=;
-    rf_rst <= '0';
 
     -- RAM
     lRAM: ram port map(CK, ram_writeEnable, ram_addr_input, ram_addr_code_input, ram_data_in, ram_data_out, ram_ins_out);
