@@ -24,11 +24,9 @@ entity ram is
             data_out        : out WORD;
             ins_out         : out PIPELINE_PARAMS
         );
-
 end entity ram;
 
 architecture Behavioral of ram is
-
     signal b_data : WORD;
 
     type MEM_T is array(0 to integer((2 ** 16) - 1)) of WORD;
