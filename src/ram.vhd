@@ -42,6 +42,10 @@ architecture Behavioral of ram is
     begin
         file_open(v_file, MEM_IMG_FILENAME, read_mode);
 
+        for k in mem_t'range loop
+            v_mem(k) := CST_ZERO;
+        end loop;
+
         while not endfile(v_file) loop
             readline(v_file, v_line);
             read(v_line, v_bit_vector);
