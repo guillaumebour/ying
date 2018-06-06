@@ -25,7 +25,7 @@ begin
         if LOAD='1' then
             out_signal <= Din;
         elsif EN='1' then 
-            out_signal <= out_signal + 1;
+            out_signal <= out_signal + 4;
         end if;
     end process;
     Dout <= out_signal;
