@@ -17,7 +17,7 @@ entity pc is
 end pc;
 
 architecture Behavioral of pc is
-    SIGNAL out_signal: WORD;
+    SIGNAL out_signal: WORD := CST_ZERO;
 begin
     process
     begin
