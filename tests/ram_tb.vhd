@@ -12,8 +12,8 @@ END ram_tb;
 ARCHITECTURE testbench OF ram_tb IS 
     COMPONENT ram
         PORT(
-                clk : in std_ulogic;
-                writeEnable     : in  std_ulogic;
+                clk : in std_logic;
+                writeEnable     : in  std_logic;
                 addr_input      : in  WORD;
                 addr_code_input : in  WORD;
                 data_in         : in  WORD;
@@ -23,8 +23,8 @@ ARCHITECTURE testbench OF ram_tb IS
     END COMPONENT;
 
     --Inputs
-    signal clk              : std_ulogic;
-    signal writeEnable      : std_ulogic;
+    signal clk              : std_logic;
+    signal writeEnable      : std_logic;
     signal addr_input       : WORD;
     signal addr_code_input  : WORD;
     signal data_in          : WORD;

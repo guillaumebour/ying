@@ -59,8 +59,8 @@ architecture Behavioral of ying is
 
     -- RAM
     COMPONENT ram
-        PORT(   clk : in std_ulogic;
-                writeEnable     : in  std_ulogic;
+        PORT(   clk : in std_logic;
+                writeEnable     : in  std_logic;
                 addr_input      : in  WORD;
                 addr_code_input : in  WORD;
                 data_in         : in  WORD;
@@ -68,7 +68,7 @@ architecture Behavioral of ying is
                 ins_out         : out PIPELINE_PARAMS
             ); 
     END COMPONENT;
-    signal ram_writeEnable      : std_ulogic;
+    signal ram_writeEnable      : std_logic;
     signal ram_addr_input       : WORD;
     signal ram_addr_code_input  : WORD;
     signal ram_data_in          : WORD;

@@ -16,8 +16,8 @@ entity ram is
                 MEM_IMG_FILENAME : string := "data/mem_img/mem.txt"
             );
     port (
-            clk : in std_ulogic;
-            writeEnable     : in  std_ulogic;
+            clk : in std_logic;
+            writeEnable     : in  std_logic;
             addr_input      : in  WORD;
             addr_code_input : in  WORD;
             data_in         : in  WORD;
