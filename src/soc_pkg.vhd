@@ -43,5 +43,7 @@ package soc_pkg is
     constant SUP_OPC  : WORD := "0000000000001100";
     constant SUPE_OPC : WORD := "0000000000001101";
     constant JMP_OPC  : WORD := "0000000000001110";
+    constant POP_OPC  : WORD := "0000000000010000";
+    constant PUSH_OPC : WORD := "0000000000010001";
     constant JMPC_OPC : WORD := "0000000000001111";
 end soc_pkg;
