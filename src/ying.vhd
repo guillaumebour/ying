@@ -128,15 +128,14 @@ begin
     rf_rst <= '0';
 
     -- RAM
-    lRAM: ram port map(CK, ram_writeEnable, , ram_addr_input, addr_code_input, data_in, data_out, ins_out);
+    lRAM: ram port map(CK, ram_writeEnable, ram_addr_input, ram_addr_code_input, ram_data_in, ram_data_out, ram_ins_out);
     ram_writeEnable <= '0';
     ram_addr_input  <= PC_Dout;
-    ram_data_input  <= CST_ZERO;
+    ram_data_in  <= CST_ZERO;
 
     -- Pipelines
     llidi : lidi port map(CK, lidi_p_in, lidi_p_out);
     lidi_p_in <= ram_ins_out;
-
 
     ldiex : diex port map(CK, diex_p_in, diex_p_out);
     diex_p_in(pipe_op) <= lidi_p_out(pipe_op);
