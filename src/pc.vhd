@@ -24,7 +24,7 @@ begin
         wait until CK'EVENT and CK='1';
         if LOAD='1' then
             out_signal <= Din;
-        elsif EN='0' then 
+        elsif EN='1' then 
             out_signal <= out_signal + 1;
         end if;
     end process;
