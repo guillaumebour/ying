@@ -105,8 +105,8 @@ begin
     lRF : register_file port map(CK, rf_addr_a, rf_addr_b, rf_writeEnable, rf_addr_w, rf_data, rf_out_a, rf_out_b);
     rf_addr_a <= lidi_p_out(pipe_b)(4 to 7);
     rf_addr_b <= lidi_p_out(pipe_c)(4 to 7);
-    rf_writeEnable <= '0' when (memre_p_out(pipe_op) >= ADD_OPC and memre_p_out(pipe_op) <= PUSH_OPC and memre_p_out(pipe_op) = STR_OPC) else
-                      '1';
+    rf_writeEnable <= '1' when (memre_p_out(pipe_op) >= ADD_OPC and memre_p_out(pipe_op) <= PUSH_OPC and memre_p_out(pipe_op) /= STR_OPC) else
+                      '0';
     rf_addr_w <= memre_p_out(pipe_a)(4 to 7);
     rf_data <= memre_p_out(pipe_b);
 
