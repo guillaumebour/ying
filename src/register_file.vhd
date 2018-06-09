@@ -16,7 +16,7 @@ entity register_file is
             addr_w : in REG_ADDR_T;     -- @W
             data : in WORD;             -- DATA
             out_a : out WORD;           -- QA
-            out_b : out WORD           -- QB
+            out_b : out WORD            -- QB
         );
 end register_file;
 
