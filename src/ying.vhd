@@ -95,19 +95,20 @@ begin
 
     -- ALU
     lALU : alu port map(alu_a, alu_b, alu_ctrl, alu_s);
-    alu_a <= diex_p_out(pipe_a);
-    alu_b <= diex_p_out(pipe_b);
+    alu_a <= diex_p_out(pipe_b);
+    alu_b <= diex_p_out(pipe_c);
     alu_ctrl <= CTRL_ALU_ADD when (diex_p_out(pipe_op) = ADD_OPC) else
                 CTRL_ALU_SUB when (diex_p_out(pipe_op) = SUB_OPC) else
                 CTRL_ALU_MUL when (diex_p_out(pipe_op) = MUL_OPC);
 
     -- Register file
-    lRF : register_file port map(CK, rf_addr_a, rf_addr_b, rf_writeEnable, rf_addr_w, rf_data, rf_rst, rf_out_a, rf_out_b);
-    -- rf_addr_a <=;
-    -- rf_addr_b <=;
-    rf_writeEnable <= '0';
-    -- rf_addr_w <=;
-    -- rf_data <=;
+    lRF : register_file port map(CK, rf_addr_a, rf_addr_b, rf_writeEnable, rf_addr_w, rf_data, rf_out_a, rf_out_b);
+    rf_addr_a <= lidi_p_out(pipe_b)(4 to 7);
+    rf_addr_b <= lidi_p_out(pipe_c)(4 to 7);
+    rf_writeEnable <= '0' when (memre_p_out(pipe_op) >= ADD_OPC and memre_p_out(pipe_op) <= PUSH_OPC and memre_p_out(pipe_op) = STR_OPC) else
+                      '1';
+    rf_addr_w <= memre_p_out(pipe_a)(4 to 7);
+    rf_data <= memre_p_out(pipe_b);
 
     -- RAM
     lRAM: ram port map(CK, ram_writeEnable, ram_addr_input, ram_addr_code_input, ram_data_in, ram_data_out, ram_ins_out);
@@ -122,13 +123,15 @@ begin
     ldiex : pipeline port map(CK, diex_p_in, diex_p_out);
     diex_p_in(pipe_op) <= lidi_p_out(pipe_op);
     diex_p_in(pipe_a)  <= lidi_p_out(pipe_a);
-    diex_p_in(pipe_b)  <= lidi_p_out(pipe_b);
-    diex_p_in(pipe_c)  <= lidi_p_out(pipe_c);
+    diex_p_in(pipe_b)  <= rf_out_a when lidi_p_out(pipe_op) = COP_OPC else
+                          lidi_p_out(pipe_b);
+    diex_p_in(pipe_c)  <= rf_out_b;
 
     lexmem : pipeline port map(CK, exmem_p_in, exmem_p_out);
     exmem_p_in(pipe_op) <= diex_p_out(pipe_op);
     exmem_p_in(pipe_a)  <= diex_p_out(pipe_a);
-    exmem_p_in(pipe_b)  <= diex_p_out(pipe_b);
+    exmem_p_in(pipe_b)  <= alu_s when (diex_p_out(pipe_op) = ADD_OPC or diex_p_out(pipe_op) = SUB_OPC or diex_p_out(pipe_op) = MUL_OPC) else
+                           diex_p_out(pipe_b);
     exmem_p_in(pipe_c)  <= diex_p_out(pipe_c);
 
     lmemre : pipeline port map(CK, memre_p_in, memre_p_out);
