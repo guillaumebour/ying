@@ -25,12 +25,10 @@ architecture Behavioral of register_file is
     signal registers : REG_FILE_T := (14 => "1111111111111111", others => CST_ZERO);
 begin
     -- Reading A and B (before bypass)
-    out_a <= registers(to_integer(unsigned(addr_a)));
-    out_b <= registers(to_integer(unsigned(addr_b)));
-    
-    -- Bypass ? 
-    out_a <= data when addr_a = addr_w;
-    out_b <= data when addr_b = addr_w;
+    out_a <= data when addr_a = addr_w else
+             registers(to_integer(unsigned(addr_a)));
+    out_b <= data when addr_b = addr_w else
+             registers(to_integer(unsigned(addr_b)));
     
     process
     begin
