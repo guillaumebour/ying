@@ -22,7 +22,7 @@ end register_file;
 
 architecture Behavioral of register_file is
     type REG_FILE_T is array(0 to 15) of WORD;
-    signal registers : REG_FILE_T;
+    signal registers : REG_FILE_T := (14 => "1111111111111111", others => CST_ZERO);
 begin
     -- Reading A and B (before bypass)
     out_a <= registers(to_integer(unsigned(addr_a)));
