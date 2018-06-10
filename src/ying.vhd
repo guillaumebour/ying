@@ -13,18 +13,6 @@ entity ying is
 end ying;
 
 architecture Behavioral of ying is
-    -- PC
-    component PC Port (Din : in WORD;
-                       CK : in STD_LOGIC;
-                       LOAD : in STD_LOGIC;
-                       EN : in STD_LOGIC;
-                       Dout : out WORD);
-    end component;
-    signal PC_Din : WORD;
-    signal PC_LOAD : STD_LOGIC;
-    signal PC_EN : STD_LOGIC;
-    signal PC_Dout : WORD;
-
     -- ALU
     component alu Port (a : in WORD;
                         b : in WORD;
@@ -44,7 +32,9 @@ architecture Behavioral of ying is
                                   addr_w : in REG_ADDR_T;
                                   data : in WORD;
                                   out_a : out WORD;
-                                  out_b : out WORD
+                                  out_b : out WORD;
+                                  pc_out : out WORD;
+                                  pc_en : in std_logic
                               );
     end component;
     signal rf_addr_a : REG_ADDR_T;
@@ -54,6 +44,8 @@ architecture Behavioral of ying is
     signal rf_data : WORD;
     signal rf_out_a : WORD;
     signal rf_out_b : WORD;
+    signal rf_pc_out : WORD;
+    signal rf_pc_en : std_logic := '1';
 
     -- RAM
     COMPONENT ram
@@ -87,12 +79,6 @@ architecture Behavioral of ying is
     signal memre_p_in : PIPELINE_PARAMS;
     signal memre_p_out : PIPELINE_PARAMS;
 begin
-    -- PC
-    lPC : PC port map(PC_Din, CK, PC_LOAD, PC_EN, PC_Dout);
-    PC_Din  <= CST_ZERO;
-    PC_LOAD <= '0';
-    PC_EN   <= '1';
-
     -- ALU
     lALU : alu port map(alu_a, alu_b, alu_ctrl, alu_s);
     alu_a <= diex_p_out(pipe_b);
@@ -102,7 +88,7 @@ begin
                 CTRL_ALU_MUL when (diex_p_out(pipe_op) = MUL_OPC);
 
     -- Register file
-    lRF : register_file port map(CK, rf_addr_a, rf_addr_b, rf_writeEnable, rf_addr_w, rf_data, rf_out_a, rf_out_b);
+    lRF : register_file port map(CK, rf_addr_a, rf_addr_b, rf_writeEnable, rf_addr_w, rf_data, rf_out_a, rf_out_b, rf_pc_out, rf_pc_en);
     rf_addr_a <= lidi_p_out(pipe_b)(4 to 7);
     rf_addr_b <= lidi_p_out(pipe_c)(4 to 7);
     rf_writeEnable <= '1' when (memre_p_out(pipe_op) >= ADD_OPC and memre_p_out(pipe_op) <= PUSH_OPC and memre_p_out(pipe_op) /= STR_OPC) else
@@ -113,7 +99,7 @@ begin
     -- RAM
     lRAM: ram port map(CK, ram_writeEnable, ram_addr_input, ram_addr_code_input, ram_data_in, ram_data_out, ram_ins_out);
     ram_writeEnable <= '0';
-    ram_addr_code_input  <= PC_Dout;
+    ram_addr_code_input  <= rf_pc_out;
     ram_data_in  <= CST_ZERO;
 
     -- Pipelines
