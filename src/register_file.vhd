@@ -16,7 +16,9 @@ entity register_file is
             addr_w : in REG_ADDR_T;     -- @W
             data : in WORD;             -- DATA
             out_a : out WORD;           -- QA
-            out_b : out WORD            -- QB
+            out_b : out WORD;           -- QB
+            pc_out : out WORD;          -- PC
+            pc_en : in std_logic        -- Enable PC
         );
 end register_file;
 
@@ -33,9 +35,14 @@ begin
     process
     begin
         wait until clk'EVENT and clk='1';
+        if pc_en = '1' then
+            registers(15) <= std_logic_vector(unsigned(registers(15)) + 4);
+        end if;
         -- Write and bypass
         if writeEnable = '1' then
             registers(to_integer(unsigned(addr_w))) <= data;
         end if;
-    end process;    
+    end process;
+
+    pc_out <= registers(15);
 end Behavioral;

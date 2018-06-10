@@ -21,7 +21,9 @@ ARCHITECTURE testbench OF register_file_tb IS
                 addr_w : in REG_ADDR_T;     -- @W
                 data : in WORD;             -- DATA
                 out_a : out WORD;           -- QA
-                out_b : out WORD           -- QB
+                out_b : out WORD;           -- QB
+                pc_out : out WORD;
+                pc_en : in std_logic
             ); 
     END COMPONENT;
 
@@ -31,11 +33,13 @@ ARCHITECTURE testbench OF register_file_tb IS
     signal writeEnable : std_logic;
     signal addr_w : REG_ADDR_T;
     signal data : WORD;
+    signal pc_en : std_logic := '1';
     signal clk : std_logic := '0';
 
     --Outputs
     signal out_a : WORD;
     signal out_b : WORD;
+    signal pc_out : WORD;
     constant clk_period : time := 500 ps;
 
 BEGIN
@@ -47,7 +51,9 @@ BEGIN
                                     data => data,
                                     clk => clk,
                                     out_a => out_a,
-                                    out_b => out_b
+                                    out_b => out_b,
+                                    pc_out => pc_out,
+                                    pc_en => pc_en
                                 );
 
     clk_process : process
