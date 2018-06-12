@@ -94,13 +94,17 @@ begin
     rf_writeEnable <= '1' when (memre_p_out(pipe_op) >= ADD_OPC and memre_p_out(pipe_op) <= PUSH_OPC and memre_p_out(pipe_op) /= STR_OPC) else
                       '0';
     rf_addr_w <= memre_p_out(pipe_a)(4 to 7);
-    rf_data <= memre_p_out(pipe_b);
+    rf_data <= ram_data_out when memre_p_out(pipe_op) = LOAD_OPC else
+               memre_p_out(pipe_b);
 
     -- RAM
     lRAM: ram port map(CK, ram_writeEnable, ram_addr_input, ram_addr_code_input, ram_data_in, ram_data_out, ram_ins_out);
-    ram_writeEnable <= '0';
+    ram_writeEnable <= '1' when exmem_p_out(pipe_op) = STR_OPC else
+                       '0';
+    ram_addr_input <= exmem_p_out(pipe_b) when exmem_p_out(pipe_op) = LOAD_OPC else
+                      exmem_p_out(pipe_a);
     ram_addr_code_input  <= rf_pc_out;
-    ram_data_in  <= CST_ZERO;
+    ram_data_in  <= exmem_p_out(pipe_b);
 
     -- Pipelines
     llidi : pipeline port map(CK, lidi_p_in, lidi_p_out);
@@ -109,7 +113,7 @@ begin
     ldiex : pipeline port map(CK, diex_p_in, diex_p_out);
     diex_p_in(pipe_op) <= lidi_p_out(pipe_op);
     diex_p_in(pipe_a)  <= lidi_p_out(pipe_a);
-    diex_p_in(pipe_b)  <= rf_out_a when lidi_p_out(pipe_op) = COP_OPC else
+    diex_p_in(pipe_b)  <= rf_out_a when (lidi_p_out(pipe_op) = COP_OPC or lidi_p_out(pipe_op) = STR_OPC) else
                           lidi_p_out(pipe_b);
     diex_p_in(pipe_c)  <= rf_out_b;
 
@@ -123,6 +127,7 @@ begin
     lmemre : pipeline port map(CK, memre_p_in, memre_p_out);
     memre_p_in(pipe_op) <= exmem_p_out(pipe_op);
     memre_p_in(pipe_a)  <= exmem_p_out(pipe_a);
-    memre_p_in(pipe_b)  <= exmem_p_out(pipe_b);
+    memre_p_in(pipe_b)  <= ram_data_out when (exmem_p_out(pipe_op) = LOAD_OPC) else
+                           exmem_p_out(pipe_b);
     memre_p_in(pipe_c)  <= exmem_p_out(pipe_c);
 end Behavioral;
